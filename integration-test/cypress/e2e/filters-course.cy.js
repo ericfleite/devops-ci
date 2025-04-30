@@ -1,6 +1,6 @@
 describe('Filtrando Cursos', () => {
     beforeEach(() => {
-        cy.visit('https://domeneghetti-devops-ci.azurewebsites.net/cursos.html');
+        cy.visit('https://domeneghetti-devops-ci.azurewebsites.net/cursos.html'); /* alterar somente a url*/
     });
 
     it('Deve filtrar curso por nome', () => {

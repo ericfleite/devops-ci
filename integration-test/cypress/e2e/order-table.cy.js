@@ -1,6 +1,6 @@
 describe('Ordenação da Tabela de Cursos', () => {
     beforeEach(() => {
-        cy.visit('https://domeneghetti-devops-ci.azurewebsites.net/cursos.html');
+        cy.visit('https://domeneghetti-devops-ci.azurewebsites.net/cursos.html'); /* alterar somente a url*/
     });
 
     it('Deve ordenar cursos em ordem alfabética', () => {
