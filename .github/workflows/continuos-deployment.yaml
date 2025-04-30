@@ -1,10 +1,10 @@
 name: continuos-deployment
 run-name: Deploy do App
 on:
-  pull_request:
-    branches:
-      - main
-  # workflow_dispatch:
+  # pull_request:
+  #   branches:
+  #     - main
+  workflow_dispatch:
 jobs:
   deploy:
     name: deploy
@@ -27,13 +27,35 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: domeneghetti/devops-ci:latest
+          tags: domeneghetti/devops-ci:latest # dockerhub
 
       - name: Azure WebApp
         uses: Azure/webapps-deploy@v3.0.1
         with:
-          app-name: domeneghetti-devops-ci
-          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
-          image: domeneghetti/devops-ci:latest
-  
-  
+          app-name: domeneghetti-devops-ci # meu app name
+          publish-profile: ${{ secrets.PUBLISH_PROFILE }} # download no azure
+          image: domeneghetti/devops-ci:latest # username alterar
+  e2e-testing:
+    name: e2e-testing
+    runs-on: ubunto-latest
+    needs: deploy
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.9.1
+        with:
+          node-version: '20'
+      
+      - name: Install Packages
+        run: |
+          cd integration-test
+          npm i
+
+      - name: Run E2E Cypress
+        run: |
+          cd integration-test
+          npx cypress run
